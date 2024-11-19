@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://bbt1k20066gdl"]
+
+[ext_resource type="Script" path="res://scripts/window_manager.gd" id="2_2gea7"]
+[ext_resource type="PackedScene" uid="uid://slid0m0da0iu" path="res://scenes/selector.tscn" id="2_3r0rd"]
+[ext_resource type="PackedScene" uid="uid://djjimcbyd3j4s" path="res://scenes/scaling_controller.tscn" id="4_s1ari"]
+[ext_resource type="PackedScene" uid="uid://stvu7o3s4gvy" path="res://scenes/side_bar.tscn" id="5_yl48o"]
+
+[node name="MainScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.230315, 0.230315, 0.230315, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="SideBar" parent="HBoxContainer" instance=ExtResource("5_yl48o")]
+layout_mode = 2
+default_architecture = 1
+
+[node name="WindowManager" type="VBoxContainer" parent="HBoxContainer" node_paths=PackedStringArray("menu", "selector", "controller")]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2_2gea7")
+menu = NodePath("../SideBar")
+selector = NodePath("Selector")
+controller = NodePath("ScalingController")
+
+[node name="Selector" parent="HBoxContainer/WindowManager" instance=ExtResource("2_3r0rd")]
+layout_mode = 2
+
+[node name="ScalingController" parent="HBoxContainer/WindowManager" instance=ExtResource("4_s1ari")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="architecture_changed" from="HBoxContainer/SideBar" to="HBoxContainer/WindowManager" method="_on_side_bar_architecture_changed"]
+[connection signal="policy_updated" from="HBoxContainer/WindowManager/Selector" to="HBoxContainer/WindowManager" method="_on_selector_policy_updated"]

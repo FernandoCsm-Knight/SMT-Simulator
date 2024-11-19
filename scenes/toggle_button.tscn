@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://vrgx2keicv2e"]
+
+[ext_resource type="Script" path="res://scripts/side_bar/toggle_button/toggle_button.gd" id="1_7m0qt"]
+[ext_resource type="Texture2D" uid="uid://mem1svu3ialr" path="res://icons/JamMenu.svg" id="2_jtsu7"]
+[ext_resource type="Script" path="res://scripts/side_bar/toggle_button/menu_button.gd" id="3_uakjp"]
+
+[node name="ToggleButton" type="Control"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1082.0
+offset_bottom = -578.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7m0qt")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+offset_top = 4.0
+offset_right = 70.0
+offset_bottom = 74.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="Button" type="Button" parent="MarginContainer" node_paths=PackedStringArray("parent")]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_vertical = 0
+toggle_mode = true
+icon = ExtResource("2_jtsu7")
+flat = true
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("3_uakjp")
+parent = NodePath("../..")
