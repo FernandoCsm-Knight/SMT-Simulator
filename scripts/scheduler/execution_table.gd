@@ -7,7 +7,7 @@ var scheduled_instructions: Array
 var visible_instructions: Array
 var animation_index: int = 0 
 var original_threads: Array
-var policy: Policy
+var thread_colors: Dictionary = {}
 
 func _init(block_size: int, start_pos: Vector2, clock_range: int = 6) -> void:
 	super(10, clock_range)
@@ -15,6 +15,8 @@ func _init(block_size: int, start_pos: Vector2, clock_range: int = 6) -> void:
 	self.start_pos = start_pos
 	self.scheduled_instructions = []
 	self.visible_instructions = []
+	self.original_threads = []
+	self.thread_colors.clear()
 
 func set_start_pos(position: Vector2):
 	start_pos = position
@@ -32,6 +34,7 @@ func reset_animation():
 	visible_instructions.clear()
 	scheduled_instructions.clear()
 	animation_index = 0
+	thread_colors.clear()
 
 func can_go_next() -> bool:
 	return animation_index < scheduled_instructions.size()
@@ -54,9 +57,17 @@ func animate_prev_step() -> void:
 func schedule(policy: Policy, is_superscalar: bool) -> void:
 	scheduled_instructions = policy.process_instructions(is_superscalar, self)
 
-func draw(drawable: Panel) -> void:
+func generate_thread_color(thread_id: int) -> Color:
+	if thread_colors.has(thread_id):
+		return thread_colors[thread_id]
+	
+	var color = Color(fmod(randf(), 1.0), fmod(randf(), 1.0), fmod(randf(), 1.0), 0.7)
+	thread_colors[thread_id] = color
+	return color
+
+func draw(drawable: Panel, is_superscalar: bool) -> void:
 	var panel_size = drawable.get_rect().size
-	var total_width = units_manager.get_number_of_units() * block_size
+	var total_width = units_manager.get_number_of_units() * block_size if is_superscalar else block_size
 	var total_height = clock_range * block_size
 	
 	for i in range(clock_range + 1):
@@ -66,18 +77,28 @@ func draw(drawable: Panel) -> void:
 			Color.DARK_GRAY
 		)
 	
-	for i in range(units_manager.get_number_of_units() + 1):
+	var column: int = units_manager.get_number_of_units() + 1 if is_superscalar else 2
+	for i in range(column):
 		drawable.draw_line(
 			Vector2(start_pos.x + i * block_size, start_pos.y),
 			Vector2(start_pos.x + i * block_size, start_pos.y + total_height),
 			Color.DARK_GRAY
 		)
 	
+	var pos: Vector2
 	for i in range(visible_instructions.size()):
 		units_manager.reset_columns()
 		for scheduled in visible_instructions[i]:
-			var column: int = units_manager.get_unit_column(scheduled.get_required_unit())
-			var pos = Vector2(start_pos.x + column * block_size, start_pos.y + i * block_size)
+			column = 0
+			if is_superscalar: column = units_manager.get_unit_column(scheduled.get_required_unit())
+			pos = Vector2(start_pos.x + column * block_size, start_pos.y + i * block_size)
+			
+			drawable.draw_rect(
+				Rect2(pos, Vector2(block_size, block_size)),
+				generate_thread_color(scheduled.get_thread_id()),
+				true  
+			)
+			
 			units_manager.set_unit_column(column)
 			scheduled.draw(drawable, pos, Vector2(block_size, block_size))
 	

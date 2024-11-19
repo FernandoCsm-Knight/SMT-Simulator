@@ -5,10 +5,11 @@ var instruction_set: Array[Instruction] = []
 var thread_id: int: get = get_thread_id
 
 func _init(instructions: Array[Instruction]) -> void:
-	for inst in instructions:
-		self.instruction_set.append(inst)
-	
 	self.thread_id = ResourceUID.create_id()
+	
+	for inst in instructions:
+		inst.set_thread_id(thread_id)
+		self.instruction_set.append(inst)
 
 func get_thread_id() -> int:
 	return thread_id

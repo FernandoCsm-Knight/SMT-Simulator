@@ -2,6 +2,7 @@ extends Object
 class_name Instruction
 
 var id: int : get = get_id
+var thread_id: int = -1: get = get_thread_id , set = set_thread_id
 var required_unit: Globals.EXECUTION_UNIT : get = get_required_unit
 var operation: Globals.INSTRUCTIONS
 var write_reg: String
@@ -32,6 +33,12 @@ func get_required_unit() -> Globals.EXECUTION_UNIT:
 
 func get_id() -> int:
 	return id
+
+func get_thread_id() -> int:
+	return thread_id
+
+func set_thread_id(t_id: int):
+	thread_id = t_id
 
 func draw(drawable: Panel, position: Vector2, block_size: Vector2):
 	var operation_string: String = Globals.INSTRUCTIONS.keys()[operation]

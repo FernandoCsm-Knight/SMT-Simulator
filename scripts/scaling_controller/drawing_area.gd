@@ -47,14 +47,6 @@ func _ready():
 	
 	setup_ui()
 
-func _on_resized():
-	var panel_size = get_rect().size
-	var table_width = block_size * execution_table.units_manager.get_number_of_units()
-	var table_height = block_size * execution_table.clock_range
-	start_pos = Vector2((panel_size.x - table_width) / 2, (panel_size.y - table_height) / 2 )
-	execution_table.set_start_pos(start_pos)
-	queue_redraw()
-
 func setup_ui():
 	button_container = HBoxContainer.new()
 	add_child(button_container)
@@ -92,6 +84,8 @@ func configure_architecture(architecture: Globals.ARCHITECTURE):
 		current_architecture = architecture
 		if current_policy and current_architecture != Globals.ARCHITECTURE.NONE:
 			start_animation()
+		
+		_on_resized()
 
 func configure_policy(policy: Policy):
 	if not current_policy or current_policy.get_type() != policy.get_type():
@@ -119,9 +113,20 @@ func _on_prev_button_pressed():
 		update_button_states()
 		queue_redraw()
 
+func _on_resized():
+	var table_width = block_size
+	if current_architecture == Globals.ARCHITECTURE.SUPER:
+		table_width *= execution_table.units_manager.get_number_of_units()
+	
+	var panel_size = get_rect().size
+	var table_height = block_size * execution_table.clock_range
+	start_pos = Vector2((panel_size.x - table_width) / 2, (panel_size.y - table_height) / 2 )
+	execution_table.set_start_pos(start_pos)
+	queue_redraw()
+
 func update_button_states():
 	prev_button.disabled = !execution_table.can_go_prev()
 	next_button.disabled = !execution_table.can_go_next()
 
 func _draw():
-	execution_table.draw(self)
+	execution_table.draw(self, current_architecture == Globals.ARCHITECTURE.SUPER)
