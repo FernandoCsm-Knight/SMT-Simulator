@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvd13l4c504pf"]
+
+[ext_resource type="Script" path="res://scripts/scheduler/cpu/unit.gd" id="1_wo62t"]
+[ext_resource type="PackedScene" uid="uid://bvr4l57ar2ck1" path="res://scenes/scheduler/slot.tscn" id="2_m2vw5"]
+
+[node name="Unit" type="Control" node_paths=PackedStringArray("column", "dropdown", "container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wo62t")
+packed = ExtResource("2_m2vw5")
+column = NodePath("VBoxContainer/Column")
+dropdown = NodePath("VBoxContainer/OptionButton")
+container = NodePath("VBoxContainer")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+offset_right = 32.0
+offset_bottom = 40.0
+theme_override_constants/separation = 10
+
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 10
+
+[node name="Column" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[connection signal="resized" from="VBoxContainer" to="." method="_on_v_box_container_resized"]
+[connection signal="item_selected" from="VBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]

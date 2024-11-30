@@ -1,0 +1,61 @@
+[gd_scene load_steps=4 format=3 uid="uid://4604gdx1u506"]
+
+[ext_resource type="Script" path="res://scripts/pipeline/pipeline.gd" id="1_cm6g7"]
+[ext_resource type="Script" path="res://scripts/pipeline/stage_manager.gd" id="2_s4xke"]
+[ext_resource type="PackedScene" uid="uid://crla40i6i0y4c" path="res://scenes/scheduler/stage.tscn" id="3_drhb1"]
+
+[node name="Pipeline" type="Control" node_paths=PackedStringArray("manager")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cm6g7")
+manager = NodePath("StageManager")
+
+[node name="StageManager" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -75.0
+offset_right = 75.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+script = ExtResource("2_s4xke")
+
+[node name="IF" parent="StageManager" instance=ExtResource("3_drhb1")]
+layout_mode = 2
+text = "IF"
+left_border = 4
+right_border = 2
+
+[node name="ID" parent="StageManager" instance=ExtResource("3_drhb1")]
+layout_mode = 2
+text = "ID"
+left_border = 2
+right_border = 2
+
+[node name="EX" parent="StageManager" instance=ExtResource("3_drhb1")]
+layout_mode = 2
+text = "EX"
+left_border = 2
+right_border = 2
+
+[node name="MEM" parent="StageManager" instance=ExtResource("3_drhb1")]
+layout_mode = 2
+text = "MEM"
+left_border = 2
+right_border = 2
+
+[node name="WB" parent="StageManager" instance=ExtResource("3_drhb1")]
+layout_mode = 2
+text = "WB"
+left_border = 2
+right_border = 4

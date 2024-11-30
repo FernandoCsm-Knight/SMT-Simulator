@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=3 uid="uid://xp41oh7axp1b"]
+
+[ext_resource type="Script" path="res://scripts/menu/selector/selector_item.gd" id="1_wxcra"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7sbe"]
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5s71v"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ap1hi"]
+
+[sub_resource type="Theme" id="Theme_kab8f"]
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_5s71v")
+CheckBox/styles/pressed = SubResource("StyleBoxEmpty_ap1hi")
+
+[node name="SelectorItem" type="Control" node_paths=PackedStringArray("checkbox", "label")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 50.0
+offset_bottom = 50.0
+script = ExtResource("1_wxcra")
+checkbox = NodePath("CheckBox")
+label = NodePath("Label")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_h7sbe")
+
+[node name="CheckBox" type="CheckBox" parent="."]
+layout_mode = 1
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 36.0
+offset_bottom = 36.0
+scale = Vector2(1.5, 1.5)
+theme = SubResource("Theme_kab8f")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = -11.0
+offset_right = 20.0
+offset_bottom = 12.0
+grow_horizontal = 2
+text = "NONE"
+horizontal_alignment = 1

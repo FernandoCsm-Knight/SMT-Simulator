@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7224wjqvfr3b"]
+
+[ext_resource type="Script" path="res://scripts/controllers/scaling_controller/architecture_controller.gd" id="1_m1m3q"]
+[ext_resource type="Script" path="res://scripts/scheduler/table.gd" id="2_rtoaa"]
+[ext_resource type="PackedScene" uid="uid://cvd13l4c504pf" path="res://scenes/scheduler/unit.tscn" id="3_r7ab3"]
+[ext_resource type="PackedScene" uid="uid://4604gdx1u506" path="res://scenes/scheduler/pipeline.tscn" id="4_s4vvw"]
+
+[node name="ArchitectureController" type="Control" node_paths=PackedStringArray("table", "pipeline")]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m1m3q")
+table = NodePath("Table")
+pipeline = NodePath("Pipeline")
+
+[node name="Table" type="Control" parent="." node_paths=PackedStringArray("line")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_rtoaa")
+line = NodePath("HBoxContainer")
+packed = ExtResource("3_r7ab3")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Table"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Pipeline" parent="." instance=ExtResource("4_s4vvw")]
+layout_mode = 1
+
+[connection signal="resized" from="Table/HBoxContainer" to="." method="_on_h_box_container_resized"]

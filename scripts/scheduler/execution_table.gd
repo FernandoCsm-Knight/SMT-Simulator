@@ -9,10 +9,10 @@ var animation_index: int = 0
 var original_threads: Array
 var thread_colors: Dictionary = {}
 
-func _init(block_size: int, start_pos: Vector2, clock_range: int = 6) -> void:
-	super(10, clock_range)
-	self.block_size = block_size
-	self.start_pos = start_pos
+func _init(block_lenth: int, start: Vector2, clk_range: int = 6) -> void:
+	super(10, clk_range)
+	self.block_size = block_lenth
+	self.start_pos = start
 	self.scheduled_instructions = []
 	self.visible_instructions = []
 	self.original_threads = []
@@ -66,7 +66,6 @@ func generate_thread_color(thread_id: int) -> Color:
 	return color
 
 func draw(drawable: Panel, is_superscalar: bool) -> void:
-	var panel_size = drawable.get_rect().size
 	var total_width = units_manager.get_number_of_units() * block_size if is_superscalar else block_size
 	var total_height = clock_range * block_size
 	

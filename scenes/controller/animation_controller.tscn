@@ -1,0 +1,100 @@
+[gd_scene load_steps=7 format=3 uid="uid://6lmr5radcrs5"]
+
+[ext_resource type="Texture2D" uid="uid://mu17evs4wlr5" path="res://icons/CharmGrabHorizontal.svg" id="1_2ym2k"]
+[ext_resource type="Script" path="res://scripts/controllers/animation_controller/animation_controller.gd" id="1_cj0nq"]
+[ext_resource type="Texture2D" uid="uid://eqcw5q34us4t" path="res://icons/MagePrevious.svg" id="2_bgoed"]
+[ext_resource type="Texture2D" uid="uid://dm4rqb5piak41" path="res://icons/MageNext.svg" id="4_pv30c"]
+[ext_resource type="Texture2D" uid="uid://bx1wviu1trfps" path="res://icons/TablerPlay.svg" id="4_tctoj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e1vk3"]
+bg_color = Color(0.129412, 0.129412, 0.129412, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[node name="AnimationController" type="Control" node_paths=PackedStringArray("previous_button", "play_button", "next_button")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 170.0
+offset_bottom = 55.0
+script = ExtResource("1_cj0nq")
+previous_button = NodePath("Panel/VBoxContainer/HBoxContainer/Previous")
+play_button = NodePath("Panel/VBoxContainer/HBoxContainer/Play")
+next_button = NodePath("Panel/VBoxContainer/HBoxContainer/Next")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Holder" type="Panel" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_default_cursor_shape = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_e1vk3")
+
+[node name="Control" type="Control" parent="Panel/VBoxContainer/Holder"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel/VBoxContainer/Holder/Control"]
+position = Vector2(5, 5)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("1_2ym2k")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 35
+alignment = 1
+
+[node name="Previous" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+icon = ExtResource("2_bgoed")
+expand_icon = true
+
+[node name="Play" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+icon = ExtResource("4_tctoj")
+expand_icon = true
+
+[node name="Next" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+icon = ExtResource("4_pv30c")
+expand_icon = true
+
+[connection signal="gui_input" from="Panel/VBoxContainer/Holder" to="." method="_on_holder_gui_input"]
+[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Previous" to="." method="_on_previous_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Next" to="." method="_on_next_pressed"]

@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://twdsc60ivgqc"]
+
+[ext_resource type="Script" path="res://scripts/menu/side_bar/side_bar_item/side_bar_item.gd" id="1_a16tj"]
+[ext_resource type="Script" path="res://scripts/menu/side_bar/side_bar_item/side_bar_item_label.gd" id="2_71bct"]
+[ext_resource type="Script" path="res://scripts/menu/side_bar/side_bar_item/side_bar_item_panel.gd" id="2_g4swa"]
+[ext_resource type="Script" path="res://scripts/menu/side_bar/side_bar_item/side_bar_item_sprite.gd" id="3_kcn0f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y517s"]
+bg_color = Color(1, 1, 1, 0)
+
+[node name="SideBarItem" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 70.0
+offset_bottom = 70.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_a16tj")
+
+[node name="SideBarPanel" type="Panel" parent="." node_paths=PackedStringArray("parent")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y517s")
+script = ExtResource("2_g4swa")
+parent = NodePath("..")
+
+[node name="SideBarLabel" type="Label" parent="." node_paths=PackedStringArray("parent")]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 80.0
+offset_right = 230.0
+grow_vertical = 2
+vertical_alignment = 1
+clip_text = true
+script = ExtResource("2_71bct")
+parent = NodePath("..")
+
+[node name="SideBarSprite" type="Sprite2D" parent="." node_paths=PackedStringArray("parent")]
+position = Vector2(35, 35)
+scale = Vector2(0.3, 0.3)
+script = ExtResource("3_kcn0f")
+parent = NodePath("..")

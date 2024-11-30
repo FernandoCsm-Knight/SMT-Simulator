@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=3 uid="uid://crla40i6i0y4c"]
+
+[ext_resource type="Script" path="res://scripts/pipeline/stage.gd" id="1_qv2x4"]
+[ext_resource type="PackedScene" uid="uid://bvr4l57ar2ck1" path="res://scenes/scheduler/slot.tscn" id="2_scp14"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vboiy"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8g4ft"]
+bg_color = Color(1, 1, 1, 0)
+border_color = Color(0, 0, 0, 1)
+
+[node name="Stage" type="Control" node_paths=PackedStringArray("stageContainer", "slotContainer", "slot", "label")]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_qv2x4")
+stageContainer = NodePath("StageContainer")
+slotContainer = NodePath("StageContainer/VBoxContainer/SlotContainer")
+slot = NodePath("StageContainer/VBoxContainer/SlotContainer/Slot")
+label = NodePath("StageContainer/VBoxContainer/MarginContainer/StageName")
+
+[node name="StageContainer" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vboiy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StageContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="StageContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="StageName" type="Label" parent="StageContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="SlotContainer" type="Panel" parent="StageContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_8g4ft")
+
+[node name="Slot" parent="StageContainer/VBoxContainer/SlotContainer" instance=ExtResource("2_scp14")]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+border_size = {
+"Bottom": 4,
+"Left": 4,
+"Right": 4,
+"Top": 4
+}
+border_color = Color(0.411765, 0.411765, 0.411765, 1)
+color = Color(1, 1, 1, 0)
+block_size = 80

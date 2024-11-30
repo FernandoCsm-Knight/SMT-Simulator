@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://djjimcbyd3j4s"]
+
+[ext_resource type="Script" path="res://scripts/controllers/scaling_controller/scaling_controller.gd" id="1_qpase"]
+[ext_resource type="PackedScene" uid="uid://c7224wjqvfr3b" path="res://scenes/controller/architecture_controller.tscn" id="2_aad5e"]
+[ext_resource type="PackedScene" uid="uid://6lmr5radcrs5" path="res://scenes/controller/animation_controller.tscn" id="3_elf04"]
+
+[node name="ScalingController" type="Control" node_paths=PackedStringArray("architecture_controller", "animation_controller")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qpase")
+architecture_controller = NodePath("ArchitectureController")
+animation_controller = NodePath("AnimationController")
+
+[node name="ArchitectureController" parent="." instance=ExtResource("2_aad5e")]
+layout_mode = 1
+
+[node name="AnimationController" parent="." instance=ExtResource("3_elf04")]
+
+[connection signal="step_state_changed" from="ArchitectureController" to="." method="_on_architecture_controller_step_state_changed"]
+[connection signal="next_step_pressed" from="AnimationController" to="." method="_on_animation_controller_next_step_pressed"]
+[connection signal="play_pressed" from="AnimationController" to="." method="_on_animation_controller_play_pressed"]
+[connection signal="previous_step_pressed" from="AnimationController" to="." method="_on_animation_controller_previous_step_pressed"]

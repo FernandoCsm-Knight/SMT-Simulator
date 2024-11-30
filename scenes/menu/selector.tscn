@@ -1,0 +1,84 @@
+[gd_scene load_steps=8 format=3 uid="uid://slid0m0da0iu"]
+
+[ext_resource type="Script" path="res://scripts/menu/selector/item_manager.gd" id="1_1uk4p"]
+[ext_resource type="Script" path="res://scripts/menu/selector/selector.gd" id="1_7tqhq"]
+[ext_resource type="PackedScene" uid="uid://xp41oh7axp1b" path="res://scenes/menu/selector_item.tscn" id="1_jqe6r"]
+[ext_resource type="Script" path="res://scripts/policies/imt_policy.gd" id="2_pxafs"]
+[ext_resource type="Script" path="res://scripts/policies/bmt_policy.gd" id="3_p06y3"]
+[ext_resource type="Script" path="res://scripts/policies/smt_policy.gd" id="4_yf5of"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqub8"]
+bg_color = Color(0.12549, 0.12549, 0.12549, 1)
+
+[node name="Selector" type="Control" node_paths=PackedStringArray("manager")]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7tqhq")
+manager = NodePath("Panel/ItemManager")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dqub8")
+
+[node name="ItemManager" type="HBoxContainer" parent="Panel" node_paths=PackedStringArray("selector")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = -25.0
+offset_right = 105.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+script = ExtResource("1_1uk4p")
+selector = NodePath("../..")
+
+[node name="SelectorItem" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
+layout_mode = 2
+type = 1
+policy = NodePath("../../../PolicyManager/IMTPolicy")
+
+[node name="SelectorItem2" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
+layout_mode = 2
+type = 2
+policy = NodePath("../../../PolicyManager/BMTPolicy")
+
+[node name="SelectorItem3" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
+layout_mode = 2
+type = 3
+policy = NodePath("../../../PolicyManager/SMTPolicy")
+
+[node name="PolicyManager" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="IMTPolicy" type="Control" parent="PolicyManager"]
+anchors_preset = 0
+script = ExtResource("2_pxafs")
+
+[node name="BMTPolicy" type="Control" parent="PolicyManager"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_p06y3")
+
+[node name="SMTPolicy" type="Control" parent="PolicyManager"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_yf5of")
