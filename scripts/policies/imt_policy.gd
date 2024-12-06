@@ -38,6 +38,9 @@ func process_instructions_with(processor: Processor) -> Array:
 		while not processor.thread_pool[thread_idx].has_instructions() and processor.has_instructions():
 			thread_idx = (thread_idx + 1) % processor.thread_pool.size()
 		
+		if current_thread.get_thread_id() == processor.thread_pool[thread_idx].get_thread_id():
+			pass # TODO: identify stalls
+		
 		current_cycle += 1
 	
 	processor.reset_threads()

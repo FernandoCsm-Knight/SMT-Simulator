@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://slid0m0da0iu"]
+[gd_scene load_steps=10 format=3 uid="uid://slid0m0da0iu"]
 
 [ext_resource type="Script" path="res://scripts/menu/selector/item_manager.gd" id="1_1uk4p"]
 [ext_resource type="Script" path="res://scripts/menu/selector/selector.gd" id="1_7tqhq"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://scripts/policies/imt_policy.gd" id="2_pxafs"]
 [ext_resource type="Script" path="res://scripts/policies/bmt_policy.gd" id="3_p06y3"]
 [ext_resource type="Script" path="res://scripts/policies/smt_policy.gd" id="4_yf5of"]
+[ext_resource type="Script" path="res://scripts/policies/std_scalar_policy.gd" id="7_hlmk1"]
+[ext_resource type="Script" path="res://scripts/policies/std_superscalar_policy.gd" id="8_ckvsl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqub8"]
 bg_color = Color(0.12549, 0.12549, 0.12549, 1)
@@ -47,17 +49,27 @@ theme_override_constants/separation = 30
 script = ExtResource("1_1uk4p")
 selector = NodePath("../..")
 
-[node name="SelectorItem" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
+[node name="SelectorItemSTDScalar" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
+layout_mode = 2
+type = 4
+policy = NodePath("../../../PolicyManager/STDScalarPolicy")
+
+[node name="SelectorItemSTDSuper" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
+layout_mode = 2
+type = 5
+policy = NodePath("../../../PolicyManager/STDSuperscalarPolicy")
+
+[node name="SelectorItemIMT" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
 layout_mode = 2
 type = 1
 policy = NodePath("../../../PolicyManager/IMTPolicy")
 
-[node name="SelectorItem2" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
+[node name="SelectorItemBMT" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
 layout_mode = 2
 type = 2
 policy = NodePath("../../../PolicyManager/BMTPolicy")
 
-[node name="SelectorItem3" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
+[node name="SelectorItemSMT" parent="Panel/ItemManager" node_paths=PackedStringArray("policy") instance=ExtResource("1_jqe6r")]
 layout_mode = 2
 type = 3
 policy = NodePath("../../../PolicyManager/SMTPolicy")
@@ -82,3 +94,15 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("4_yf5of")
+
+[node name="STDScalarPolicy" type="Control" parent="PolicyManager"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("7_hlmk1")
+
+[node name="STDSuperscalarPolicy" type="Control" parent="PolicyManager"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("8_ckvsl")

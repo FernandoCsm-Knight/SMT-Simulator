@@ -17,6 +17,10 @@ var policy: Policy:
 	set = set_policy,
 	get = get_policy
 
+var forwarding: bool:
+	set = set_forwarding,
+	get = has_forwarding
+
 var units_manager: UnitsManager
 var thread_pool: Array[ThreadInstructions]
 var _immutable_thread_pool: Array[ThreadInstructions]
@@ -26,12 +30,14 @@ func _init(
 	architecture_type: Globals.ARCHITECTURE = Globals.ARCHITECTURE.NONE,
 	clk_range: int = 6, 
 	fetch_order: int = 10,
-	thread_support: Policy = Policy.new()
+	thread_support: Policy = Policy.new(),
+	with_forwarding: bool = false
 ) -> void:
 	set_architecture(architecture_type)
 	set_clock_range(clk_range)
 	set_instruction_fetch(fetch_order)
 	set_policy(thread_support)
+	set_forwarding(with_forwarding)
 	
 	self.thread_pool = []
 	self.units_manager = UnitsManager.new()
@@ -48,6 +54,12 @@ func _generate_thread_color(thread_id: int):
 
 func get_thread_support() -> Globals.POLICIES:
 	return policy.get_type()
+
+func set_forwarding(value: bool):
+	forwarding = value
+
+func has_forwarding() -> bool:
+	return forwarding
 
 func set_architecture(architecture_type: Globals.ARCHITECTURE):
 	architecture = architecture_type
@@ -111,7 +123,7 @@ func has_instructions() -> bool:
 	return some
 
 func process_instructions() -> Array:
-	if not is_empty() and has_instructions():
+	if not is_empty() and has_instructions() and policy:
 		return policy.process_instructions_with(self)
 	else:
 		return []

@@ -12,10 +12,10 @@ class_name PipelineStage
 		min_size = value
 		custom_minimum_size = Vector2(value, value)
 
-@export var text: String = '': 
+@export var type: Globals.PIPELINE_STAGES:
 	set(value):
-		text = value
-		label.text = text
+		type = value
+		label.text = Globals.PIPELINE_STAGES.keys()[value]
 
 @export var color: Color = Color.TRANSPARENT:
 	set(value):
@@ -60,6 +60,7 @@ class_name PipelineStage
 func _ready():
 	_update_stage()
 	_update_slot_container()
+	label.text = Globals.PIPELINE_STAGES.keys()[type]
 	custom_minimum_size = Vector2(min_size, min_size)
 
 func _update_stage():
@@ -96,6 +97,5 @@ func clear_instruction():
 	slot.clear_instruction()
 
 func clear():
-	text = ''
 	color = Color.TRANSPARENT
 	container_color = Color.TRANSPARENT

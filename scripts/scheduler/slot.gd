@@ -9,7 +9,7 @@ class_name Slot
 @export var color: Color : set = set_color, get = get_color
 @export var block_size: int : set = set_block_size, get = get_block_size
 
-var instruction: Instruction  = null
+var instruction: Instruction = Instruction.new()
 var text: String : set = set_text, get = get_text
 var font_size: int : set = set_font_size, get = get_font_size
 var font_color: Color : set = set_font_color, get = get_font_color
@@ -27,14 +27,14 @@ func _init(
 	box_size: int = 30, 
 	label_font_size: int = 12, 
 	label_font_color: Color = Color.WHITE, 
-	border_color: Color = Color.DIM_GRAY,
+	color_border: Color = Color.DIM_GRAY,
 ) -> void:
 	set_text(label_text)
 	set_color(background_color)
 	set_block_size(box_size)
 	set_font_size(label_font_size)
 	set_font_color(label_font_color)
-	set_border_color(border_color)
+	set_border_color(color_border)
 
 func _reset_borders():
 	var stylebox = StyleBoxFlat.new()
@@ -49,6 +49,7 @@ func _reset_borders():
 func set_instruction(inst: Instruction, color: Color = Color.TRANSPARENT):
 	instruction = inst
 	if inst == null:
+		instruction = Instruction.new()
 		clear_color()
 		clear_text()
 	else:
@@ -89,7 +90,7 @@ func clear_color() -> void:
 	set_color(Color.TRANSPARENT)
 
 func clear_instruction() -> void:
-	instruction = null
+	instruction = Instruction.new()
 	clear_text()
 	clear_color()
 

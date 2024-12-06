@@ -95,3 +95,67 @@ func get_dependencies() -> Dictionary:
 				))
 				
 	return dependencies
+
+func calculate_pipeline_stalls_for(index: int, with_forwarding: bool = false) -> int:
+	var stalls: int = 0
+	var dependencies = get_dependencies_for(index)
+	
+	var instruction_start_cycle = [0]
+	instruction_start_cycle.resize(instruction_set.size())
+	
+	for i in range(instruction_set.size()):
+		instruction_start_cycle[i] = i
+	
+	instruction_start_cycle[index] = instruction_start_cycle[index - 1] + 1
+	
+	for raw_dep: Dependency in dependencies[Globals.DEPENDENCIES.RAW]:
+		if raw_dep.second_instruction_index == index:
+			var cycle_range: int
+			if not with_forwarding:
+				# 3 = 5 pipeline stages -1 for write and read at same cycle and -1 to account for the first cycle
+				cycle_range = instruction_start_cycle[raw_dep.first_instruction_index] + 3
+			elif raw_dep.first_instruction.operation == Globals.INSTRUCTIONS.LW:
+				# 2 = 5 pipeline stages -1 for write and read at same cycle, -1 for forwarding and -1 to account for the first cycle
+				cycle_range = instruction_start_cycle[raw_dep.first_instruction_index] + 2
+			
+			stalls += max(0, cycle_range - instruction_start_cycle[index])
+			instruction_start_cycle[index] = max(instruction_start_cycle[index], cycle_range)
+	
+	return stalls
+
+func calculate_pipeline_stalls(with_forwarding: bool = false) -> int:
+	var stalls: int = 0 
+	var dependencies = get_dependencies()
+	
+	var instruction_start_cycle = [0]
+	instruction_start_cycle.resize(instruction_set.size())
+	
+	var j: int = 0
+	var cycle_range: int = 0
+	for i in range(instruction_set.size() - 1):
+		j = i + 1
+		
+		instruction_start_cycle[j] = instruction_start_cycle[j-1] + 1
+		
+		for raw_dep: Dependency in dependencies[Globals.DEPENDENCIES.RAW]:
+			if raw_dep.second_instruction_index == j:
+				if not with_forwarding:
+					# 3 = 5 pipeline stages -1 for write and read at same cycle and -1 to account for the first cycle
+					cycle_range = instruction_start_cycle[raw_dep.first_instruction_index] + 3
+				elif raw_dep.first_instruction.operation == Globals.INSTRUCTIONS.LW:
+					# 2 = 5 pipeline stages -1 for write and read at same cycle, -1 for forwarding and -1 to account for the first cycle
+					cycle_range = instruction_start_cycle[raw_dep.first_instruction_index] + 2
+				
+				stalls += max(0, cycle_range - instruction_start_cycle[j])
+				instruction_start_cycle[j] = max(instruction_start_cycle[j], cycle_range)
+	
+	return stalls
+
+func print_pipeline_stalls():
+	print("Stalls without forwarding:")
+	var stalls_without_forwarding = calculate_pipeline_stalls(false)
+	print('raw_stalls: {}'.format([stalls_without_forwarding], '{}'))
+	
+	print("\nStalls with forwarding:")
+	var stalls_with_forwarding = calculate_pipeline_stalls(true)
+	print('raw_stalls: {}'.format([stalls_with_forwarding], '{}'))

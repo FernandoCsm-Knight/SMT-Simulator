@@ -1,3 +1,4 @@
+@tool
 extends VBoxContainer
 
 @export var menu: Control = null
@@ -31,19 +32,27 @@ func _ready() -> void:
 			Instruction.new(Globals.INSTRUCTIONS.LW, 'R1', 'R11', 'R3'),
 			Instruction.new(Globals.INSTRUCTIONS.SLT, 'R0', 'R0', 'R1'),
 			Instruction.new(Globals.INSTRUCTIONS.SUB, 'R0', 'R0', 'R0'),
-			Instruction.new(Globals.INSTRUCTIONS.ADD, 'R2', 'R7', 'R3'),
+			Instruction.new(Globals.INSTRUCTIONS.ADD, 'R2', 'R0', 'R3')
 		]
 	)
 	
 	processor.append_thread(first_thread)
 	processor.append_thread(second_thread)
-	controller.accomodate_processor(processor)
+	if not Engine.is_editor_hint():
+		controller.accomodate_processor(processor)
 
 func _on_side_bar_architecture_changed(architecture: Globals.ARCHITECTURE) -> void:
-	selector.accomodate_architecture(architecture)
-	processor.set_architecture(architecture)
-	controller.accomodate_processor(processor)
+	if not Engine.is_editor_hint():
+		selector.accomodate_architecture(architecture)
+		processor.set_architecture(architecture)
+		controller.accomodate_processor(processor)
 
 func _on_selector_policy_updated(policy: Policy) -> void:
-	processor.set_policy(policy)
-	controller.accomodate_processor(processor)
+	if not Engine.is_editor_hint():
+		processor.set_policy(policy)
+		controller.accomodate_processor(processor)
+
+func _on_displayer_forwarding_request(has_forwarding: bool) -> void:
+	if not Engine.is_editor_hint():
+		processor.set_forwarding(has_forwarding)
+		controller.accomodate_processor(processor)

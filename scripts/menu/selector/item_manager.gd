@@ -1,5 +1,6 @@
 @tool
 extends HBoxContainer
+class_name ItemManager
 
 var current_policy: Policy 
 @export var selector: Selector = null
@@ -21,7 +22,7 @@ func accomodate_policy(policy_type: Globals.POLICIES):
 				current_policy = child.get_policy()
 				found = true
 			child.reset(there_is)
-
+	
 	if not found: current_policy = Policy.new()
 
 func _on_policy_selected(policy: Policy):

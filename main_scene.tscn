@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bbt1k20066gdl"]
+[gd_scene load_steps=6 format=3 uid="uid://bbt1k20066gdl"]
 
 [ext_resource type="Script" path="res://scripts/window_manager.gd" id="2_2gea7"]
 [ext_resource type="PackedScene" uid="uid://slid0m0da0iu" path="res://scenes/menu/selector.tscn" id="2_3r0rd"]
 [ext_resource type="PackedScene" uid="uid://djjimcbyd3j4s" path="res://scenes/controller/scaling_controller.tscn" id="4_6e6v2"]
+[ext_resource type="PackedScene" uid="uid://cxe8g3q6hxq41" path="res://scenes/menu/displayer.tscn" id="5_yjfmi"]
 [ext_resource type="PackedScene" uid="uid://stvu7o3s4gvy" path="res://scenes/menu/side_bar.tscn" id="5_yl48o"]
 
 [node name="MainScene" type="Control"]
@@ -42,15 +43,34 @@ theme_override_constants/separation = 0
 script = ExtResource("2_2gea7")
 menu = NodePath("../SideBar")
 selector = NodePath("Selector")
-controller = NodePath("ScalingController")
+controller = NodePath("Container/ScalingController")
 
 [node name="Selector" parent="HBoxContainer/WindowManager" instance=ExtResource("2_3r0rd")]
 layout_mode = 2
-default_policy = 1
+default_policy = 4
 
-[node name="ScalingController" parent="HBoxContainer/WindowManager" instance=ExtResource("4_6e6v2")]
+[node name="Container" type="Control" parent="HBoxContainer/WindowManager"]
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="ScalingController" parent="HBoxContainer/WindowManager/Container" instance=ExtResource("4_6e6v2")]
+layout_mode = 1
+size_flags_vertical = 3
+
+[node name="Displayer" parent="HBoxContainer/WindowManager/Container" instance=ExtResource("5_yjfmi")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -60.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 60.0
+grow_horizontal = 0
+grow_vertical = 1
+
 [connection signal="architecture_changed" from="HBoxContainer/SideBar" to="HBoxContainer/WindowManager" method="_on_side_bar_architecture_changed"]
 [connection signal="policy_updated" from="HBoxContainer/WindowManager/Selector" to="HBoxContainer/WindowManager" method="_on_selector_policy_updated"]
+[connection signal="forwarding_request" from="HBoxContainer/WindowManager/Container/Displayer" to="HBoxContainer/WindowManager" method="_on_displayer_forwarding_request"]

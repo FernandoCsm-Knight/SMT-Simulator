@@ -32,30 +32,29 @@ script = ExtResource("2_s4xke")
 
 [node name="IF" parent="StageManager" instance=ExtResource("3_drhb1")]
 layout_mode = 2
-text = "IF"
 left_border = 4
 right_border = 2
 
 [node name="ID" parent="StageManager" instance=ExtResource("3_drhb1")]
 layout_mode = 2
-text = "ID"
+type = 1
 left_border = 2
 right_border = 2
 
 [node name="EX" parent="StageManager" instance=ExtResource("3_drhb1")]
 layout_mode = 2
-text = "EX"
+type = 2
 left_border = 2
 right_border = 2
 
 [node name="MEM" parent="StageManager" instance=ExtResource("3_drhb1")]
 layout_mode = 2
-text = "MEM"
+type = 3
 left_border = 2
 right_border = 2
 
 [node name="WB" parent="StageManager" instance=ExtResource("3_drhb1")]
 layout_mode = 2
-text = "WB"
+type = 4
 left_border = 2
 right_border = 4

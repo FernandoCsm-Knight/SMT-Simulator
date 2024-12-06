@@ -19,6 +19,10 @@ animation_controller = NodePath("AnimationController")
 layout_mode = 1
 
 [node name="AnimationController" parent="." instance=ExtResource("3_elf04")]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 180.0
+offset_bottom = 65.0
 
 [connection signal="step_state_changed" from="ArchitectureController" to="." method="_on_architecture_controller_step_state_changed"]
 [connection signal="next_step_pressed" from="AnimationController" to="." method="_on_animation_controller_next_step_pressed"]

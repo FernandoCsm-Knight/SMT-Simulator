@@ -2,8 +2,8 @@
 extends Control
 class_name Selector
 
-@export var manager: Control = null
-@export var default_policy: Globals.POLICIES = Globals.POLICIES.NONE : set = set_policy
+@export var manager: ItemManager = null
+@export var default_policy: Globals.POLICIES = Globals.POLICIES.NONE: set = set_policy
 
 signal policy_updated(policy: Policy)
 
@@ -13,9 +13,9 @@ func _ready() -> void:
 func accomodate_architecture(architecture: Globals.ARCHITECTURE):
 	match architecture:
 		Globals.ARCHITECTURE.SCALAR:
-			manager.enable([Globals.POLICIES.IMT, Globals.POLICIES.BMT])
+			manager.enable([Globals.POLICIES.STD_SCALAR, Globals.POLICIES.IMT, Globals.POLICIES.BMT])
 		Globals.ARCHITECTURE.SUPER:
-			manager.enable([Globals.POLICIES.IMT, Globals.POLICIES.BMT, Globals.POLICIES.SMT])
+			manager.enable([Globals.POLICIES.STD_SUPERSCALAR, Globals.POLICIES.IMT, Globals.POLICIES.BMT, Globals.POLICIES.SMT])
 		_:
 			pass
 
