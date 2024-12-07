@@ -63,6 +63,8 @@ func has_forwarding() -> bool:
 
 func set_architecture(architecture_type: Globals.ARCHITECTURE):
 	architecture = architecture_type
+	if policy and not policy.support(architecture):
+		policy = Policy.new()
 
 func get_architecture() -> Globals.ARCHITECTURE:
 	return architecture
@@ -80,7 +82,9 @@ func get_instruction_fetch() -> int:
 	return instruction_fetch
 
 func set_policy(thread_support: Policy):
-	policy = thread_support
+	if thread_support and thread_support.support(architecture):
+		policy = thread_support
+	else: policy = Policy.new()
 
 func get_policy() -> Policy:
 	return policy

@@ -45,6 +45,7 @@ func _on_side_bar_architecture_changed(architecture: Globals.ARCHITECTURE) -> vo
 	if not Engine.is_editor_hint():
 		selector.accomodate_architecture(architecture)
 		processor.set_architecture(architecture)
+		processor.set_policy(selector.get_policy())
 		controller.accomodate_processor(processor)
 
 func _on_selector_policy_updated(policy: Policy) -> void:

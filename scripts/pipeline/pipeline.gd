@@ -126,5 +126,6 @@ func reset_state(processor: Processor) -> void:
 	stalls.clear()
 	if not processor.is_empty():
 		scheduled_instructions = processor.process_instructions()
+		print(scheduled_instructions)
 		animation_index = 0
 	manager.reset_state()

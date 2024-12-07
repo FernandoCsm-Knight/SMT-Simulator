@@ -11,7 +11,7 @@ func _on_animation_controller_next_step_pressed() -> void:
 	architecture_controller.next_step()
 
 func _on_animation_controller_play_pressed(is_play: bool) -> void:
-	print(is_play)
+	architecture_controller.animate(is_play)
 
 func _on_animation_controller_previous_step_pressed() -> void:
 	architecture_controller.previous_step()

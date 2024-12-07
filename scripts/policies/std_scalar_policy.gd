@@ -20,3 +20,6 @@ func process_instructions_with(processor: Processor) -> Array:
 
 func get_type() -> Globals.POLICIES:
 	return Globals.POLICIES.STD_SCALAR
+
+func get_architecture_support() -> Array[Globals.ARCHITECTURE]:
+	return [Globals.ARCHITECTURE.SCALAR]

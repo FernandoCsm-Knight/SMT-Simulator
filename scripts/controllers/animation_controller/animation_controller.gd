@@ -2,7 +2,7 @@ extends Control
 class_name AnimationController
 
 var holding: bool = false
-var toggled: bool = true
+var toggled: bool = false
 var distance: Vector2 = Vector2()
 
 @export var previous_button: Button = null
@@ -20,6 +20,10 @@ func update_step_buttons(can_go_previous: bool, can_go_next: bool):
 	next_button.disabled = not can_go_next
 	play_button.disabled = not can_go_next
 	previous_button.disabled = not can_go_previous
+	
+	if play_button.disabled:
+		play_button.icon = play_icon
+		toggled = false
 
 func _physics_process(delta: float) -> void:
 	if holding:
@@ -48,6 +52,6 @@ func _on_next_pressed() -> void:
 	next_step_pressed.emit()
 
 func _on_play_pressed() -> void:
-	toggled = not toggled
 	play_button.icon = play_icon if toggled else pause_icon
+	toggled = not toggled
 	play_pressed.emit(toggled)

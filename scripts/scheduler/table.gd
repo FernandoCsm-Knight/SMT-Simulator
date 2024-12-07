@@ -118,6 +118,7 @@ func reset_state(processor: Processor) -> void:
 	
 	if not processor.is_empty():
 		scheduled_instructions = processor.process_instructions()
+		print(scheduled_instructions)
 		animation_index = 0
 	
 	for unit in processor.units_manager.all_units:

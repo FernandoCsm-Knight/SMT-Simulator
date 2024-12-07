@@ -30,6 +30,9 @@ func remove_at(position: int):
 func has_instructions() -> bool:
 	return instruction_set.size() > 0
 
+func is_empty() -> bool:
+	return instruction_set.is_empty()
+
 func size() -> int:
 	return instruction_set.size()
 

@@ -29,12 +29,15 @@ func _on_policy_selected(policy: Policy):
 	for child in get_children():
 		if child is SelectorItem and child.get_policy() != policy: child.reset(false)
 	
+	current_policy = policy
 	selector.notify_policy(policy)
 
-func enable(policies):
+func enable(architecture: Globals.ARCHITECTURE):
 	for child in get_children():
 		if child is SelectorItem:
-			if child.get_type() in policies:
+			if child.get_policy().support(architecture):
 				child.show()
+				child.mouse_filter = Control.MOUSE_FILTER_STOP
 			else:
 				child.hide()
+				child.mouse_filter = Control.MOUSE_FILTER_IGNORE

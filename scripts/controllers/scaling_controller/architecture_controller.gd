@@ -3,6 +3,7 @@ class_name ArchitectureController
 
 @export var table: Table
 @export var pipeline: Pipeline
+@export var animation_timer: Timer
 
 var is_superscalar: bool = false
 var current_processor: Processor = null : set = configure_processor
@@ -15,6 +16,11 @@ func _ready():
 		configure_processor(current_processor)
 	else:
 		_update_button_states()
+
+func animate(play: bool):
+	if animation_timer:
+		if play: animation_timer.start()
+		else: animation_timer.stop()
 
 func _update_interface():
 	if is_superscalar:
@@ -31,27 +37,35 @@ func _update_interface():
 		pipeline.reset_state(current_processor)
 
 func configure_processor(processor: Processor):
+	animate(false)
 	current_processor = processor
 	is_superscalar = current_processor.get_architecture() == Globals.ARCHITECTURE.SUPER
 	_update_interface()
 	_update_button_states()
 
 func next_step():
-	if is_superscalar and table.can_go_next():
-		table.forward()
-		_update_button_states()
-	elif pipeline.can_go_next():
-		pipeline.forward()
+	if can_go_next():
+		if is_superscalar: table.forward()
+		else: pipeline.forward()
 		_update_button_states()
 
 func previous_step():
-	if is_superscalar and table.can_go_prev():
-		table.backward()
-		_update_button_states()
-	elif pipeline.can_go_prev():
-		pipeline.backward()
+	if can_go_prev():
+		if is_superscalar: table.backward()
+		else: pipeline.backward()
 		_update_button_states()
 
+func can_go_next() -> bool:
+	return table.can_go_next() if is_superscalar else pipeline.can_go_next()
+
+func can_go_prev() -> bool:
+	return table.can_go_prev() if is_superscalar else pipeline.can_go_prev()
+
 func _update_button_states():
-	if is_superscalar: step_state_changed.emit(table.can_go_prev(), table.can_go_next())
-	else: step_state_changed.emit(pipeline.can_go_prev(), pipeline.can_go_next())
+	step_state_changed.emit(can_go_prev(), can_go_next())
+
+func _on_animation_timer_timeout() -> void:
+	if can_go_next():
+		next_step()
+	else: 
+		animation_timer.stop()

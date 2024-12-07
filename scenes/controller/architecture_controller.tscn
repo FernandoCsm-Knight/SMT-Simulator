@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cvd13l4c504pf" path="res://scenes/scheduler/unit.tscn" id="3_r7ab3"]
 [ext_resource type="PackedScene" uid="uid://4604gdx1u506" path="res://scenes/scheduler/pipeline.tscn" id="4_s4vvw"]
 
-[node name="ArchitectureController" type="Control" node_paths=PackedStringArray("table", "pipeline")]
+[node name="ArchitectureController" type="Control" node_paths=PackedStringArray("table", "pipeline", "animation_timer")]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -17,6 +17,9 @@ grow_vertical = 2
 script = ExtResource("1_m1m3q")
 table = NodePath("Table")
 pipeline = NodePath("Pipeline")
+animation_timer = NodePath("AnimationTimer")
+
+[node name="AnimationTimer" type="Timer" parent="."]
 
 [node name="Table" type="Control" parent="." node_paths=PackedStringArray("line")]
 layout_mode = 1
@@ -49,4 +52,5 @@ theme_override_constants/separation = 0
 [node name="Pipeline" parent="." instance=ExtResource("4_s4vvw")]
 layout_mode = 1
 
+[connection signal="timeout" from="AnimationTimer" to="." method="_on_animation_timer_timeout"]
 [connection signal="resized" from="Table/HBoxContainer" to="." method="_on_h_box_container_resized"]
