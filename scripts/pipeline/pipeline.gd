@@ -11,7 +11,8 @@ var last_instruction_id: int = -1
 @export var manager: StageManager = null
 
 func can_go_next() -> bool:
-	return animation_index < scheduled_instructions.size() or end_cycles < manager.pipeline_size()
+	var can_go_over: bool = (animation_index > 0 and end_cycles < manager.pipeline_size())
+	return animation_index < scheduled_instructions.size() or can_go_over
 
 func can_go_prev() -> bool:
 	return animation_index > 0

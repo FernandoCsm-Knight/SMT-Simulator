@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cxe8g3q6hxq41"]
+[gd_scene load_steps=8 format=3 uid="uid://cxe8g3q6hxq41"]
 
 [ext_resource type="Texture2D" uid="uid://c44bibef3iu55" path="res://icons/MaterialSymbolsInfo.png" id="1_2aki3"]
-[ext_resource type="Script" path="res://scripts/menu/displayer.gd" id="1_ckokk"]
+[ext_resource type="Script" path="res://scripts/menu/displayer/displayer.gd" id="1_ckokk"]
+[ext_resource type="PackedScene" uid="uid://cbcntccwvfcrj" path="res://scenes/menu/displayer/metrics.tscn" id="2_8uqhc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8fkby"]
 bg_color = Color(0.866667, 0.866667, 0.866667, 1)
@@ -48,7 +49,7 @@ _data = {
 "resize_info_panel": SubResource("Animation_igd4s")
 }
 
-[node name="Displayer" type="Control" node_paths=PackedStringArray("animation", "info_box")]
+[node name="Displayer" type="Control" node_paths=PackedStringArray("animation", "info_box", "metrics")]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 3
 anchors_preset = 8
@@ -65,6 +66,7 @@ grow_vertical = 2
 script = ExtResource("1_ckokk")
 animation = NodePath("AnimationPlayer")
 info_box = NodePath("InfoPanel/InfoContainer")
+metrics = NodePath("InfoPanel/InfoContainer/VBoxContainer/Metrics")
 metadata/_edit_vertical_guides_ = [901.0]
 
 [node name="InfoPanel" type="Panel" parent="."]
@@ -95,6 +97,14 @@ theme_override_constants/margin_bottom = 25
 layout_mode = 2
 theme_override_constants/separation = 10
 
+[node name="ConfigurationTitle" type="Label" parent="InfoPanel/InfoContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="CheckButton" type="CheckButton" parent="InfoPanel/InfoContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
@@ -116,14 +126,9 @@ theme_override_colors/icon_disabled_color = Color(0, 0, 0, 1)
 theme_override_constants/h_separation = 10
 text = "Data Forwarding"
 
-[node name="IPC" type="Label" parent="InfoPanel/InfoContainer/VBoxContainer"]
+[node name="Metrics" parent="InfoPanel/InfoContainer/VBoxContainer" instance=ExtResource("2_8uqhc")]
 layout_mode = 2
-mouse_filter = 1
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-
-[node name="Stalls" type="Label" parent="InfoPanel/InfoContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+size_flags_vertical = 3
 
 [node name="TextureRect" type="TextureRect" parent="InfoPanel"]
 layout_mode = 1

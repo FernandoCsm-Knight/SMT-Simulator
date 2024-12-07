@@ -40,8 +40,6 @@ func process_instructions_with(processor: Processor) -> Array:
 					curr.instruction_set.remove_at(k)
 					break
 		
-		print(freese)
-		print(curr.instruction_set)
 		scheduled_instructions.append(cycle)
 		if curr.is_empty():
 			processor.thread_pool.remove_at(0)

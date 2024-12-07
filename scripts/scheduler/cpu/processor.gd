@@ -21,8 +21,13 @@ var forwarding: bool:
 	set = set_forwarding,
 	get = has_forwarding
 
+var displayer: Displayer = null:
+	set = set_displayer,
+	get = get_displayer 
+
 var units_manager: UnitsManager
 var thread_pool: Array[ThreadInstructions]
+var _scheduled: Array
 var _immutable_thread_pool: Array[ThreadInstructions]
 var _thread_colors: Dictionary
 
@@ -43,14 +48,49 @@ func _init(
 	self.units_manager = UnitsManager.new()
 	_immutable_thread_pool = []
 	_thread_colors = {}
-
-func get_thread_color(thread_id: int) -> Color:
-	return _thread_colors[thread_id] if _thread_colors.has(thread_id) else Color.TRANSPARENT
+	_scheduled = []
 
 func _generate_thread_color(thread_id: int):
 	if not _thread_colors.has(thread_id):
 		var color = Color(fmod(randf(), 1.0), fmod(randf(), 1.0), fmod(randf(), 1.0), 0.7)
 		_thread_colors[thread_id] = color
+
+func _update_displayer():
+	if has_displayer():
+		var stalls: int = 0
+		var unused_units: int = 0
+		var operations: int = 0
+		var cycles: int = _scheduled.size()
+		var usage: float = 0.0
+		
+		if architecture == Globals.ARCHITECTURE.SCALAR:
+			for inst in _scheduled:
+				if inst[0].operation == Globals.INSTRUCTIONS.STALL or inst[0].operation == Globals.INSTRUCTIONS.TRASH:
+					stalls += 1
+				else:
+					operations += 1
+			usage = float(cycles - stalls)/float(cycles)
+		else:
+			for arr in _scheduled:
+				if arr.size() == 0:
+					stalls += 1
+				else:
+					operations += arr.size()
+			usage = float(operations) / float(cycles * units_manager.size())
+		
+		displayer.set_architecture(architecture)
+		displayer.set_thread_support(policy.get_type())
+		displayer.set_stalls(stalls)
+		displayer.set_cycles(cycles)
+		displayer.set_ipc(float(operations)/float(cycles))
+		displayer.set_cpi(float(cycles)/float(operations))
+		displayer.set_usage(usage)
+
+func has_displayer() -> bool:
+	return displayer != null
+
+func get_thread_color(thread_id: int) -> Color:
+	return _thread_colors[thread_id] if _thread_colors.has(thread_id) else Color.TRANSPARENT
 
 func get_thread_support() -> Globals.POLICIES:
 	return policy.get_type()
@@ -126,14 +166,25 @@ func has_instructions() -> bool:
 			some = true
 	return some
 
+func get_scheduled_instructions() -> Array:
+	return _scheduled if _scheduled != null else []
+
 func process_instructions() -> Array:
 	if not is_empty() and has_instructions() and policy:
-		return policy.process_instructions_with(self)
+		_scheduled = policy.process_instructions_with(self)
+		_update_displayer()
+		return _scheduled
 	else:
 		return []
 
 func is_empty() -> bool:
 	return units_manager.get_number_of_units() == 0 or thread_pool.is_empty()
+
+func set_displayer(interface: Displayer):
+	displayer = interface
+
+func get_displayer() -> Displayer:
+	return displayer
 
 func clear():
 	thread_pool.clear()

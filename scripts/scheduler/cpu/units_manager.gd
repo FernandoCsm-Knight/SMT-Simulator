@@ -10,6 +10,13 @@ func _init() -> void:
 		all_units[key] = 0
 		units_in_use[key] = 0
 
+func size() -> int:
+	var units: int = 0
+	for key in all_units.keys():
+		units += all_units[key]
+	
+	return units
+
 func get_number_of_units() -> int:
 	return number_of_units
 

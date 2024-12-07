@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/window_manager.gd" id="2_2gea7"]
 [ext_resource type="PackedScene" uid="uid://slid0m0da0iu" path="res://scenes/menu/selector.tscn" id="2_3r0rd"]
 [ext_resource type="PackedScene" uid="uid://djjimcbyd3j4s" path="res://scenes/controller/scaling_controller.tscn" id="4_6e6v2"]
-[ext_resource type="PackedScene" uid="uid://cxe8g3q6hxq41" path="res://scenes/menu/displayer.tscn" id="5_yjfmi"]
+[ext_resource type="PackedScene" uid="uid://cxe8g3q6hxq41" path="res://scenes/menu/displayer/displayer.tscn" id="5_yjfmi"]
 [ext_resource type="PackedScene" uid="uid://stvu7o3s4gvy" path="res://scenes/menu/side_bar.tscn" id="5_yl48o"]
 
 [node name="MainScene" type="Control"]
@@ -36,13 +36,14 @@ theme_override_constants/separation = 0
 layout_mode = 2
 default_architecture = 1
 
-[node name="WindowManager" type="VBoxContainer" parent="HBoxContainer" node_paths=PackedStringArray("menu", "selector", "controller")]
+[node name="WindowManager" type="VBoxContainer" parent="HBoxContainer" node_paths=PackedStringArray("menu", "selector", "displayer", "controller")]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 script = ExtResource("2_2gea7")
 menu = NodePath("../SideBar")
 selector = NodePath("Selector")
+displayer = NodePath("Container/Displayer")
 controller = NodePath("Container/ScalingController")
 
 [node name="Selector" parent="HBoxContainer/WindowManager" instance=ExtResource("2_3r0rd")]

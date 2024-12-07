@@ -3,11 +3,13 @@ extends VBoxContainer
 
 @export var menu: Control = null
 @export var selector: Selector = null
+@export var displayer: Displayer = null
 @export var controller: ScalingController = null
 
 var processor: Processor = Processor.new()
 
 func _ready() -> void:
+	processor.set_displayer(displayer)
 	processor.append_functional_unit(Globals.EXECUTION_UNIT.ALU)
 	processor.append_functional_unit(Globals.EXECUTION_UNIT.ALU)
 	processor.append_functional_unit(Globals.EXECUTION_UNIT.DATA)
