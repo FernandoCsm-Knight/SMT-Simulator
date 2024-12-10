@@ -45,6 +45,7 @@ menu = NodePath("../SideBar")
 selector = NodePath("Selector")
 displayer = NodePath("Container/Displayer")
 controller = NodePath("Container/ScalingController")
+standard_path = null
 
 [node name="Selector" parent="HBoxContainer/WindowManager" instance=ExtResource("2_3r0rd")]
 layout_mode = 2
@@ -73,5 +74,6 @@ grow_horizontal = 0
 grow_vertical = 1
 
 [connection signal="architecture_changed" from="HBoxContainer/SideBar" to="HBoxContainer/WindowManager" method="_on_side_bar_architecture_changed"]
+[connection signal="file_selected" from="HBoxContainer/SideBar" to="HBoxContainer/WindowManager" method="_on_side_bar_file_selected"]
 [connection signal="policy_updated" from="HBoxContainer/WindowManager/Selector" to="HBoxContainer/WindowManager" method="_on_selector_policy_updated"]
 [connection signal="forwarding_request" from="HBoxContainer/WindowManager/Container/Displayer" to="HBoxContainer/WindowManager" method="_on_displayer_forwarding_request"]

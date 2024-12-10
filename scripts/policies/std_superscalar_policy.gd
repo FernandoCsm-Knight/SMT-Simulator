@@ -34,11 +34,8 @@ func process_instructions_with(processor: Processor) -> Array:
 			
 			i += 1
 		
-		for j in range(cycle.size()):
-			for k in range(curr.instruction_set.size()):
-				if cycle[j].get_id() == curr.instruction_set[k].get_id():
-					curr.instruction_set.remove_at(k)
-					break
+		for inst in cycle:
+			curr.remove(inst)
 		
 		scheduled_instructions.append(cycle)
 		if curr.is_empty():

@@ -186,11 +186,17 @@ func set_displayer(interface: Displayer):
 func get_displayer() -> Displayer:
 	return displayer
 
-func clear():
+func clear_threads():
 	thread_pool.clear()
-	units_manager.clear()
 	_immutable_thread_pool.clear()
 	_thread_colors.clear()
+
+func clear_units():
+	units_manager.clear()
+
+func clear():
+	clear_units()
+	clear_threads()
 
 func _to_string() -> String:
 	return 'CPU({}, {}, {}, {})'.format([

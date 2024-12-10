@@ -154,6 +154,9 @@ func calculate_pipeline_stalls(with_forwarding: bool = false) -> int:
 	
 	return stalls
 
+func clear():
+	instruction_set.clear()
+
 func print_pipeline_stalls():
 	print("Stalls without forwarding:")
 	var stalls_without_forwarding = calculate_pipeline_stalls(false)

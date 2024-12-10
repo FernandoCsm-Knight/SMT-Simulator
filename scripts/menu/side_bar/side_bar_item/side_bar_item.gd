@@ -8,7 +8,7 @@ class_name SideBarItem
 
 var selected: bool = false : set = set_selected, get = is_selected
 
-signal item_clicked(value)
+signal item_clicked(value: SideBarItem)
 signal text_updated(value)
 signal texture_updated(value)
 signal background_updated(value)

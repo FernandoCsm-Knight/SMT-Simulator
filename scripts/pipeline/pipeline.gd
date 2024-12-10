@@ -78,13 +78,15 @@ func _stalls_until_ex() -> int:
 	
 	return response
 
-func _verify_stalls():
+func _verify_stalls(is_stall: bool):
 	if animation_index < scheduled_instructions.size():
 		var inst: Instruction = scheduled_instructions[animation_index][0]
-		while inst.operation == Globals.INSTRUCTIONS.STALL and animation_index > 0:
-			animation_index -= 1
-			inst = scheduled_instructions[animation_index][0]
 		
+		if not is_stall:
+			while inst.operation == Globals.INSTRUCTIONS.STALL and animation_index > 0:
+				animation_index -= 1
+				inst = scheduled_instructions[animation_index][0]
+			
 		if animation_index > 0 and stalls.has(inst.get_id()):
 			stalls.erase(inst.get_id())
 
@@ -95,11 +97,10 @@ func backward():
 		inst = _found_next_instruction()
 	
 	if inst != null and end_cycles < Globals.PIPELINE_STAGES.EX:
-		if inst != null: 
-			if stalls.has(inst.get_id()):
-				stalls[inst.get_id()] += 1
-			else:
-				stalls[inst.get_id()] = 1
+		if stalls.has(inst.get_id()):
+			stalls[inst.get_id()] += 1
+		else:
+			stalls[inst.get_id()] = 1
 		
 		var index: int = animation_index - manager.pipeline_size() - _stalls_until_ex() - stalls[inst.get_id()] + end_cycles
 		if index > 0:
@@ -118,7 +119,7 @@ func backward():
 		if end_cycles == 0: animation_index -= 1
 		else: end_cycles -= 1
 	
-	_verify_stalls()
+	_verify_stalls(inst != null)
 
 func reset_state(processor: Processor) -> void:
 	current_processor = processor

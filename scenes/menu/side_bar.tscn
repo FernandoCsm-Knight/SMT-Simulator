@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://stvu7o3s4gvy"]
+[gd_scene load_steps=16 format=3 uid="uid://stvu7o3s4gvy"]
 
 [ext_resource type="Script" path="res://scripts/menu/side_bar/side_bar.gd" id="1_dvcka"]
 [ext_resource type="PackedScene" uid="uid://vrgx2keicv2e" path="res://scenes/menu/toggle_button.tscn" id="1_mhvqp"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/menu/side_bar/item_manager.gd" id="2_wtwd8"]
 [ext_resource type="Texture2D" uid="uid://chgg2ejps7chx" path="res://icons/SolarCpuLinear.svg" id="3_kij7k"]
 [ext_resource type="Texture2D" uid="uid://b1fdt0p6essv4" path="res://icons/SolarCpuBoltLinear.svg" id="4_ugwgp"]
+[ext_resource type="Texture2D" uid="uid://d3tu04o03a72k" path="res://icons/UilImport.svg" id="5_6vdla"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0wfqy"]
 
@@ -64,14 +65,23 @@ _data = {
 "open_sidebar": SubResource("Animation_am2nx")
 }
 
-[node name="SideBar" type="Control" node_paths=PackedStringArray("manager")]
+[node name="SideBar" type="Control" node_paths=PackedStringArray("file_dialog", "manager")]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
 grow_vertical = 2
 script = ExtResource("1_dvcka")
+file_dialog = NodePath("FileDialog")
 manager = NodePath("SideBarPanel/VBoxContainer/ItemManager")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 1
+size = Vector2i(571, 300)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
 
 [node name="SideBarPanel" type="Panel" parent="."]
 clip_contents = true
@@ -133,6 +143,15 @@ offset_bottom = 35.0
 grow_horizontal = 0
 animation = NodePath("../../../AnimationPlayer")
 
+[node name="ConfigurationManager" type="VBoxContainer" parent="SideBarPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="SideBarItem" parent="SideBarPanel/VBoxContainer/ConfigurationManager" instance=ExtResource("2_rpcb3")]
+layout_mode = 2
+size_flags_horizontal = 1
+text = "Import File"
+texture = ExtResource("5_6vdla")
+
 [node name="MarginContainer" type="MarginContainer" parent="SideBarPanel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
@@ -171,3 +190,8 @@ root_node = NodePath("../../..")
 libraries = {
 "": SubResource("AnimationLibrary_uttoj")
 }
+
+[connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
+[connection signal="close_requested" from="FileDialog" to="." method="_on_file_dialog_close_requested"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="item_clicked" from="SideBarPanel/VBoxContainer/ConfigurationManager/SideBarItem" to="." method="_on_side_bar_item_item_clicked"]
