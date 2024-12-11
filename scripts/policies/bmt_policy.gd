@@ -14,9 +14,11 @@ func get_dependencies_for_bmt(current_thread: ThreadInstructions, with_forwardin
 	return dependencies
 
 func process_instructions_with(processor: Processor) -> Array:
-	#print("Processando instruções para a política BMT")
-	scheduled_instructions.clear()
 	var is_superscalar: bool = processor.get_architecture() == Globals.ARCHITECTURE.SUPER
+	if is_superscalar and not _verify(processor):
+		return []
+	
+	scheduled_instructions.clear()
 	var current_cycle = 0
 	var thread_idx: int = 0
 	var dependencies: Dictionary 

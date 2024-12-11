@@ -31,9 +31,12 @@ func get_dependencies_for_smt(index: int, all_instructions) -> Dictionary:
 	return dependencies
 
 func process_instructions_with(processor: Processor) -> Array:
+	var is_superscalar: bool = processor.get_architecture() == Globals.ARCHITECTURE.SUPER
+	if not is_superscalar or not _verify(processor):
+		return []
+	
 	scheduled_instructions.clear()
 	
-	var is_superscalar: bool = processor.get_architecture() == Globals.ARCHITECTURE.SUPER
 	var current_cycle = 0
 	var thread_idx: int = 0
 	var dependencies: Dictionary 

@@ -2,6 +2,9 @@ extends Policy
 class_name SuperscalarPolicy
 
 func process_instructions_with(processor: Processor) -> Array:
+	if not _verify(processor):
+		return []
+	
 	scheduled_instructions.clear()
 	
 	var curr_idx: int = 0

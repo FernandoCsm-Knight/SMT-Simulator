@@ -1,8 +1,12 @@
 extends Policy
 
 func process_instructions_with(processor: Processor) -> Array:
-	scheduled_instructions.clear()
 	var is_superscalar: bool = processor.get_architecture() == Globals.ARCHITECTURE.SUPER
+	
+	if is_superscalar and not _verify(processor):
+		return []
+	
+	scheduled_instructions.clear()
 	var thread_idx: int = 0
 	var current_thread: ThreadInstructions
 	var thread_interpolate: Dictionary = {}
