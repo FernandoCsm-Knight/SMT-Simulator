@@ -45,7 +45,6 @@ menu = NodePath("../SideBar")
 selector = NodePath("Selector")
 displayer = NodePath("Container/Displayer")
 controller = NodePath("Container/ScalingController")
-standard_path = null
 
 [node name="Selector" parent="HBoxContainer/WindowManager" instance=ExtResource("2_3r0rd")]
 layout_mode = 2

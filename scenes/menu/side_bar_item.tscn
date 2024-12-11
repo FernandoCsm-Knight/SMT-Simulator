@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://scripts/menu/side_bar/side_bar_item/side_bar_item_panel.gd" id="2_g4swa"]
 [ext_resource type="Script" path="res://scripts/menu/side_bar/side_bar_item/side_bar_item_sprite.gd" id="3_kcn0f"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fc0c2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4lr8"]
 bg_color = Color(1, 1, 1, 0)
 
 [node name="SideBarItem" type="Control"]
@@ -26,7 +26,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_fc0c2")
+theme_override_styles/panel = SubResource("StyleBoxFlat_m4lr8")
 script = ExtResource("2_g4swa")
 parent = NodePath("..")
 

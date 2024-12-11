@@ -32,6 +32,7 @@ func get_dependencies_for_smt(index: int, all_instructions) -> Dictionary:
 
 func process_instructions_with(processor: Processor) -> Array:
 	scheduled_instructions.clear()
+	
 	var is_superscalar: bool = processor.get_architecture() == Globals.ARCHITECTURE.SUPER
 	var current_cycle = 0
 	var thread_idx: int = 0
@@ -49,9 +50,7 @@ func process_instructions_with(processor: Processor) -> Array:
 		if(!processor.thread_pool.is_empty()):
 			thread_idx = (thread_idx + 1) % processor.thread_pool.size()
 			current_thread = processor.thread_pool[thread_idx]
-	print("all inst", all_instructions)
-	print("deps smt", dependencies)
-	#$while !all_instructions.is_empty():
+
 	var inst_idx: int = 0
 	while all_instructions.size()>0:
 		processor.units_manager.free_all_units()
@@ -68,29 +67,7 @@ func process_instructions_with(processor: Processor) -> Array:
 		for j in gone:
 			all_instructions.erase(j)
 		current_cycle += 1
-	#while inst_idx < all_instructions.size() and processor.units_manager.has_unit_available():
-		#processor.units_manager.free_all_units()
-		#scheduled_instructions.append([])
-		#dependencies = get_dependencies_for_smt(inst_idx, all_instructions)
-		#processor.units_manager.has_unit_available()
-		#var instruction: Instruction = all_instructions[inst_idx][1]
-		#if dependencies[Globals.DEPENDENCIES.RAW].size() == 0:
-			#if processor.units_manager.is_unit_available(instruction.get_required_unit()):
-				#scheduled_instructions[current_cycle].append(instruction)
-				#processor.units_manager.use_unit(instruction.get_required_unit())
-		#
-		#inst_idx += 1
-		#
-		#for inst in scheduled_instructions[current_cycle]:
-			#current_thread.remove(inst)
-		
-		#thread_idx = (thread_idx + 1) % processor.thread_pool.size()
-		#while not processor.thread_pool[thread_idx].has_instructions() and processor.has_instructions():
-		#	thread_idx = (thread_idx + 1) % processor.thread_pool.size()
-		
-		#if current_thread.get_thread_id() == processor.thread_pool[thread_idx].get_thread_id():
-		#	pass # TODO: identify stalls
-	print("scdl smt", scheduled_instructions)
+	
 	processor.reset_threads()
 	return scheduled_instructions
 

@@ -14,7 +14,7 @@ func get_dependencies_for_bmt(current_thread: ThreadInstructions, with_forwardin
 	return dependencies
 
 func process_instructions_with(processor: Processor) -> Array:
-	print("Processando instruções para a política BMT")
+	#print("Processando instruções para a política BMT")
 	scheduled_instructions.clear()
 	var is_superscalar: bool = processor.get_architecture() == Globals.ARCHITECTURE.SUPER
 	var current_cycle = 0
@@ -22,7 +22,7 @@ func process_instructions_with(processor: Processor) -> Array:
 	var dependencies: Dictionary 
 	var current_thread: ThreadInstructions
 	var current_thread_cycle = 0
-	var cycles_per_thread = 2
+	var cycles_per_thread = 3
 	var stalls
 	while processor.has_instructions():
 		processor.units_manager.free_all_units()
@@ -46,15 +46,27 @@ func process_instructions_with(processor: Processor) -> Array:
 				
 		elif current_thread.has_instructions():
 			var instruction: Instruction 
-			stalls = get_dependencies_for_bmt(current_thread, processor.has_forwarding())
-			if(stalls > 0 and current_thread_cycle !=cycles_per_thread-1):
-				for i in range(stalls):
-					current_thread.instruction_set.insert(1, Instruction.new())	
+			stalls = get_dependencies_for_bmt(current_thread, processor.has_forwarding())		
+			# print(current_thread.instruction_set[0], stalls)
+			if(stalls > 0):
+				var blocked = processor.next_thread(thread_idx)
+				if(blocked[0]):
 					instruction = current_thread.instruction_set[0]
 					current_thread.remove_at(0)
 					scheduled_instructions[current_cycle].append(instruction)
 					current_cycle+=1
 					scheduled_instructions.append([])
+					thread_idx = blocked[1]
+					current_thread = processor.thread_pool[thread_idx]	
+					stalls=0
+				else:
+					for i in range(stalls):
+						current_thread.instruction_set.insert(1, Instruction.new())	
+						instruction = current_thread.instruction_set[0]
+						current_thread.remove_at(0)
+						scheduled_instructions[current_cycle].append(instruction)
+						current_cycle+=1
+						scheduled_instructions.append([])
 				instruction = current_thread.instruction_set[0]
 				current_thread.remove_at(0)
 				scheduled_instructions[current_cycle].append(instruction)
@@ -71,12 +83,10 @@ func process_instructions_with(processor: Processor) -> Array:
 		while not processor.thread_pool[thread_idx].has_instructions() and processor.has_instructions():
 			thread_idx = (thread_idx + 1) % processor.thread_pool.size()
 		
-		if current_thread.get_thread_id() == processor.thread_pool[thread_idx].get_thread_id():
-			pass # TODO: identify stalls
-		
 		current_cycle += 1
-	scheduled_instructions.pop_back()
 	processor.reset_threads()
+	
+	#print("inst bmt fi", scheduled_instructions)
 	return scheduled_instructions
 
 func get_type() -> Globals.POLICIES:

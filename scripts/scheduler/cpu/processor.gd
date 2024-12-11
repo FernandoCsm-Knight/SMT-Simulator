@@ -149,6 +149,12 @@ func append_thread(thread: ThreadInstructions):
 	thread_pool.append(thread)
 	_generate_thread_color(thread.thread_id)
 
+func next_thread(current: int):
+	for j in range(thread_pool.size()):
+		if thread_pool[j].instruction_set.size() > 0 and j != current:
+			return [true, j]
+	return [false, 0]
+
 func remove_thread(thread_id: int) -> bool:
 	for i in range(thread_pool.size()):
 		if thread_pool[i].thread_id == thread_id:

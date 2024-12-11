@@ -97,7 +97,10 @@ func _init(file_path: String):
 		resolve_labels(thread_instructions[t_id], labels_by_thread[t_id])
 
 func parse_instruction_line(line: String, line_count: int) -> Instruction:
-	# Exemplo de linha: "ADD, R1, R2, R3"
+	# Exemplo de linha:
+	# Instrução de cálculo: "ADD, R1, R2, R3"
+	# Instrução de controle: "BEQ, R1, R2, LABEL"
+
 	var parts: Array[String] = []
 	for p in line.split(","):
 		parts.append(p.strip_edges())
@@ -107,22 +110,33 @@ func parse_instruction_line(line: String, line_count: int) -> Instruction:
 		return null
 
 	var instr_str: String = parts[0].to_upper()
-	var write_reg: String = parts[1].to_upper()
-	var op1_reg: String = parts[2].to_upper()
-	var op2_reg: String = parts[3].to_upper()
 
 	if not instructions_map.has(instr_str):
 		push_error("Instrução não reconhecida na linha %d: %s" % [line_count, instr_str])
 		return null
 
 	var instruction_type: int = instructions_map[instr_str]
+
+	var write_reg: String = ""
+	var op1_reg: String = ""
+	var op2_reg: String = ""
 	var branch_target: String = ""
 
+	# Se a instrução é de controle (por exemplo, BEQ, BNE, JAL),
+	# ela não deve ter um registrador de escrita. Ao invés disso,
+	# o primeiro registrador lido será op1_reg, o segundo será op2_reg
+	# e o terceiro parâmetro será um label de branch.
 	if instruction_type in [Globals.INSTRUCTIONS.BEQ, Globals.INSTRUCTIONS.BNE, Globals.INSTRUCTIONS.JAL]:
-		branch_target = op2_reg
-		op2_reg = ""
+		# Exemplo: BEQ, R1, R2, LABEL
+		op1_reg = parts[1].to_upper()
+		op2_reg = parts[2].to_upper()
+		branch_target = parts[3].to_upper()
+	else:
+		# Exemplo: ADD, R1, R2, R3
+		write_reg = parts[1].to_upper()
+		op1_reg = parts[2].to_upper()
+		op2_reg = parts[3].to_upper()
 
-	# Cria uma nova instrução
 	var instr: Instruction = Instruction.new(instruction_type, write_reg, op1_reg, op2_reg, branch_target)
 	return instr
 
